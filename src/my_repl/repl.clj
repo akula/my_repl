@@ -52,6 +52,60 @@
       :let [name (.getName meth)]
       :when (re-find #"Vis" name)] name)
 
-frame
-
 (.isVisible frame)
+
+(def population {:zombies 2700, :humans 9})
+
+(get population :zombies)
+(population :zombies)
+(:zombies population)
+
+(defn pour [lb ub]
+  (cond
+    (= ub :toujours) (iterate inc lb)
+    :else (range lb ub)))
+
+(pour 1 10)
+
+
+(defn do-blowfish [directive]
+  (case directive
+    :aquarium/blowfish (prn "feed the fish")
+    :crypto/blowfish (prn "encode the fish")
+    :blowfish (prn "not sure what to do"))
+  )
+
+(ns crypto)
+(my-repl.repl/do-blowfish :blowfish)
+(my-repl.repl/do-blowfish ::blowfish)
+(ns aquarium)
+(my-repl.repl/do-blowfish ::blowfish)
+
+
+(defn best [f xs]
+  (reduce #(if (f % %2) % %2) xs))
+
+(best > [ 1 2 3 4 5 9 1 2 3])
+
+(defn split-name
+  [user]
+  (zipmap [:first :last]
+          (.split ^String (:name user) " ")))
+
+(zipmap '(:hi :end) (.split "hello world" " "))
+
+(defn copy-files
+  [from to]
+  (with-open [in (java.io.FileInputStream. from)
+              out (java.io.FileOutputStream. to)]
+    (loop [buf (make-array Byte/TYPE 1024)]
+      (let [len (.read in buf)]
+        (when (pos? len)
+          (.write out buf 0 len)
+          (recur buf))))))
+
+(defn length-of
+  [^String text]
+  (.length text))
+
+(length-of "hello world")
